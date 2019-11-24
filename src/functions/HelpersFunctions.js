@@ -25,6 +25,7 @@ function checkPermissions(msg, permissions, condition = 'or') {
             return value;
         }
     }
+    return !!msg.member.roles.find(r => r.name === permissions);
 }
 
 HelpersFunctions.checkPermissions = checkPermissions;
