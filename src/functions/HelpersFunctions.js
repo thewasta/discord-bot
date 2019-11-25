@@ -5,6 +5,9 @@ function stopBotToRead(msg) {
 }
 
 function authorIsConnectedFrom(args) {
+    if (args.clientStatus === null) {
+        return 'Desconectado';
+    }
     if (args.clientStatus.web !== undefined) {
         return 'Aplicación Web';
     } else if (args.clientStatus.mobile !== undefined) {

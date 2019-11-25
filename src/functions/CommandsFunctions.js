@@ -12,18 +12,34 @@ function hasArguments(message) {
 
 function userInformation(args) {
     if (checkPermissions(args, ['ADMIN', 'owner'], 'or')) {
-        let embed = new RichEmbed();
-        embed.setColor('LUMINOUS_VIVID_PINK')
-            .setThumbnail(args.author.avatarURL)
-            .setAuthor(args.author.username.toUpperCase())
-            .addField('Nombre de Usuario', `${args.author.tag}`)
-            .addField('ID usuario', args.author.id)
-            .addField('Estado Actual', args.author.presence.status)
-            .addField('Conectado desde', authorIsConnectedFrom(args.author.presence))
-            .addField('Fecha que se unió a Discord', args.author.createdAt)
-            .addBlankField()
-            .addField('URL de Avatar', args.author.avatarURL);
-        return embed;
+
+        if (args.mentions.users.first()) {
+            let embed = new RichEmbed();
+            embed.setColor('RED')
+                .setAuthor(args.mentions.users.first().username.toUpperCase())
+                .setThumbnail(args.mentions.users.first().avatarURL)
+                .addField('Nombre de usuario', args.mentions.users.first().tag)
+                .addField('ID usuario', args.mentions.users.first().id)
+                .addField('Ping de conexión', args.mentions.users.first().client.pings)
+                .addField('Estado Actual', args.mentions.users.first().presence.status)
+                .addField('Plataforma conexión', authorIsConnectedFrom(args.mentions.users.first().presence))
+                .addField('Fecha que se unió a Discord', args.mentions.users.first().createdAt)
+                .addField('URL de Avatar', args.mentions.users.first().avatarURL);
+            return embed;
+        } else {
+            let embed = new RichEmbed();
+            embed.setColor('LUMINOUS_VIVID_PINK')
+                .setAuthor(args.author.username.toUpperCase())
+                .setThumbnail(args.author.avatarURL)
+                .addField('Nombre de Usuario', `${args.author.tag}`)
+                .addField('ID usuario', args.author.id)
+                .addField('Ping de conexión', `${args.client.ping}ms`)
+                .addField('Estado Actual', args.author.presence.status)
+                .addField('Plataforma conexión', authorIsConnectedFrom(args.author.presence))
+                .addField('Fecha que se unió a Discord', args.author.createdAt)
+                .addField('URL de Avatar', args.author.avatarURL);
+            return embed;
+        }
     } else {
         return 'You have not permissions to use this command';
     }
