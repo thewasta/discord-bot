@@ -3,7 +3,7 @@ module.exports = {
         console.log('I\'m ready');
     },
     onReconnecting: () => {
-        console.log('I loose connection, have to refresh the connection');
+        console.log('I loose connection, trying to reconnect');
     },
     onError: (error) => {
         console.log(error);

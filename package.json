@@ -16,6 +16,8 @@
   "dependencies": {
     "discord.js": "^11.5.1",
     "ffmpeg": "0.0.4",
-    "mongoose": "^5.7.12"
+    "mongoose": "^5.7.12",
+    "node-opus": "^0.3.3",
+    "ytdl-core": "^1.0.1"
   }
 }

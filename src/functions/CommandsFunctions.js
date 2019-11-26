@@ -1,5 +1,7 @@
 const {RichEmbed} = require('discord.js');
 const {checkPermissions, authorIsConnectedFrom} = require('./HelpersFunctions');
+const ytdl = require('ytdl-core');
+let isReady = true;
 module.exports = {
     userInformation: (args) => {
         if (checkPermissions(args, ['ADMIN', 'owner'], 'or')) {
@@ -96,5 +98,20 @@ module.exports = {
             return `I have deleted ${fetchLimit} messages from ${args.channel.name.toUpperCase()} text channel`;
         }
         return 'You have not permissions to use this command';
+    },
+
+    joinChannel: (args) => {
+        console.log('here');
+        isReady = false;
+        var voiceChannel = args.member.voiceChannel;
+        voiceChannel.join().then(connection => {
+            ytdl.getVideoID()
+            console.log('then');
+            const dispatcher = connection.playFile('../../music.mp3');
+            dispatcher.on('end', end => {
+                voiceChannel.leave();
+            });
+        }).catch(err => console.log(err));
+        isReady = true;
     }
 };
