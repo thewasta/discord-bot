@@ -1,7 +1,7 @@
 const {RichEmbed} = require('discord.js');
 const {checkPermissions, authorIsConnectedFrom} = require('./HelpersFunctions');
 const ytdl = require('ytdl-core');
-let isReady = true;
+let servers = {};
 module.exports = {
     userInformation: (args) => {
         if (checkPermissions(args, ['ADMIN', 'owner'], 'or')) {
@@ -100,18 +100,40 @@ module.exports = {
         return 'You have not permissions to use this command';
     },
 
-    joinChannel: (args) => {
-        console.log('here');
-        isReady = false;
-        var voiceChannel = args.member.voiceChannel;
-        voiceChannel.join().then(connection => {
-            ytdl.getVideoID()
-            console.log('then');
-            const dispatcher = connection.playFile('../../music.mp3');
-            dispatcher.on('end', end => {
-                voiceChannel.leave();
+    joinChannel: (args, id) => {
+        function play(connection, message) {
+            let server = servers[message.guild.id];
+            console.log(server.queue[0], 'queue');
+            const stream = ytdl(server.queue[0], {filter: 'audioonly'});
+            server.dispatcher = connection.playStream(stream, {seek: 0, volume: 1});
+            server.queue.shift();
+            server.dispatcher.on('end', function () {
+                if (server.queue[0]) {
+                    play(connection, message);
+                } else {
+                    console.log('disconect');
+                    connection.disconnect();
+                }
             });
-        }).catch(err => console.log(err));
-        isReady = true;
+        }
+
+        if (!id) return 'Necesito la url de tu vídeo';
+        if (!args.member.voiceChannel) return 'Tienes que estar en la sala: general';
+        // if (!id.match(/^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/)) return 'La URL no es válida';
+        console.log(!servers[args.guild.id], servers[args.guild.id]);
+        if (!servers[args.guild.id]) {
+            servers[args.guild.id] = {
+                queue: []
+            };
+        }
+
+        let server = servers[args.guild.id];
+        server.queue.push(id);
+        if (!args.guild.voiceConnection) {
+            args.member.voiceChannel.join().then(function (connection) {
+                console.log('then');
+                play(connection, args);
+            });
+        }
     }
 };
