@@ -1,7 +1,7 @@
 const {Client} = require('discord.js');
 const bot = new Client({disableEveryone: true});
 const {onMessage, onMessageDelete, onMessageEdit} = require('./MessagesEvents');
-const {onGuildMemberAdd, onGuildMemberRemove, onGuildMemberUpdate} = require('./GuildEvents');
+const {onGuildMemberAdd, onGuildMemberRemove, onGuildMemberUpdate, onGuildUpdate} = require('./GuildEvents');
 const {onDisconnect, onError, onReady, onReconnecting} = require('./BotStatus');
 const {onChannelCreate} = require('./ChannelEvents');
 
@@ -24,5 +24,6 @@ bot.on('channelCreate', onChannelCreate);
 bot.on('guildMemberAdd', onGuildMemberAdd);
 bot.on('guildMemberRemove', onGuildMemberRemove);
 bot.on('guildMemberUpdate', onGuildMemberUpdate);
+bot.on('guildUpdate', onGuildUpdate);
 
 module.exports.bot = bot;

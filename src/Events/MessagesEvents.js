@@ -27,6 +27,7 @@ module.exports = {
             if (command === `${prefix}join`) {
                 joinChannel(message, args[0]);
             }
+            message.delete();
         }
     },
 
