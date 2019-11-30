@@ -1,6 +1,6 @@
 module.exports = {
-    onChannelCreate: () => {
-
+    onChannelCreate: (callback, channel) => {
+        callback(channel);
     },
 
     onChannelDelete: () => {

@@ -99,19 +99,4 @@ module.exports = {
         }
         return 'You have not permissions to use this command';
     },
-
-    joinChannel: (args) => {
-        console.log('here');
-        isReady = false;
-        var voiceChannel = args.member.voiceChannel;
-        voiceChannel.join().then(connection => {
-            ytdl.getVideoID()
-            console.log('then');
-            const dispatcher = connection.playFile('../../music.mp3');
-            dispatcher.on('end', end => {
-                voiceChannel.leave();
-            });
-        }).catch(err => console.log(err));
-        isReady = true;
-    }
 };

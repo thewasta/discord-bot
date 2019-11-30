@@ -1,5 +1,5 @@
 const {stopBotToRead} = require('../functions/HelpersFunctions');
-const {userInformation, purgeMessages, muteUser, unMuteUser, joinChannel} = require('../functions/CommandsFunctions');
+const {userInformation, purgeMessages, muteUser, unMuteUser} = require('../functions/CommandsFunctions');
 const prefix = process.env.PREFIX;
 
 module.exports = {
@@ -24,16 +24,7 @@ module.exports = {
             if (command === `${prefix}unmute`) {
                 message.channel.send(unMuteUser(message));
             }
-            if (command === `${prefix}join`) {
-                joinChannel(message, args[0]);
-            }
         }
-    },
-
-    onMessageDelete: (message) => {
-        console.log('message deleted');
-    },
-
-    onMessageEdit: (oldMessage, newMessage) => {
+        return undefined;
     }
 };

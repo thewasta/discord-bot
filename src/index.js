@@ -4,6 +4,3 @@ const token = process.env.DISCORD_TOKEN;
 const {bot} = require('./Events');
 
 bot.login(token).catch(error => console.log(error));
-
-
-
